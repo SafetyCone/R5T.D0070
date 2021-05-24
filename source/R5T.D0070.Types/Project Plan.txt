@@ -1,0 +1,4 @@
+R5T.D0070.Types - Types library for appsettings.json related services. (Similar to R5T.Shrewsbury, but asynchronous.)
+
+Goals
+
