@@ -8,6 +8,8 @@ using R5T.Lombardy;
 using R5T.D0062;
 using R5T.D0065;
 
+using R5T.D0070.Default;
+
 
 namespace R5T.D0070
 {
@@ -207,6 +209,60 @@ namespace R5T.D0070
         {
             var serviceAction = ServiceAction.New<IAppSettingsFileNameStemTokenizationConvention>(() => services.AddAppSettingsFileNameStemTokenizationConvention());
             return serviceAction;
+        }
+
+        public static DefaultAppSettingsFilePathAggregation01 AddDefaultJsonAppSettingsFilePathProviderAction(this IServiceCollection services,
+            IServiceAction<IExecutableDirectoryPathProvider> executableDirectoryPathProviderAction,
+            IServiceAction<IFileNameOperator> fileNameOperatorAction,
+            IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
+        {
+            var appSettingsDirectoryPathProviderAction = services.AddExecutableDirectoryBasedAppSettingsDirectoryPathProviderAction(
+                executableDirectoryPathProviderAction);
+
+            var appsettingsFileNameProviderAction = services.AddDefaultJsonAppSettingsFileNameProviderAction(
+                fileNameOperatorAction);
+
+            var appSettingsFilePathProviderAction = services.AddAppSettingsFilePathProviderAction(
+                appSettingsDirectoryPathProviderAction,
+                appsettingsFileNameProviderAction,
+                stringlyTypedPathOperatorAction);
+
+            return new DefaultAppSettingsFilePathAggregation01
+            {
+                AppSettingsDirectoryPathProviderAction = appSettingsDirectoryPathProviderAction,
+                AppSettingsFileNameProviderAction = appsettingsFileNameProviderAction,
+                AppSettingsFilePathProvider = appSettingsFilePathProviderAction,
+            };
+        }
+
+        public static EnvironmentNameSpecificAppSettingsFilePathAggregation01 AddEnvironmentNameSpecificAppSettingsFilePathProviderAction(this IServiceCollection services,
+            IServiceAction<IAppSettingsDirectoryPathProvider> appSettingsDirectoryPathProviderAction,
+            IServiceAction<IEnvironmentNameProvider> environmentNameProviderAction,
+            IServiceAction<IFileNameOperator> fileNameOperatorAction,
+            IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
+        {
+            var appSettingsFileNameStemTokenizationConventionAction = services.AddAppSettingsFileNameStemTokenizationConventionAction();
+
+            var environmentNameToAppSettingsFileNameTokenConverterAction = services.AddEnvironmentNameToAppSettingsFileNameTokenConverterAction();
+
+            var environmentNameSpecificAppSettingsFileNameProviderAction = services.AddEnvironmentNameSpecificAppSettingsFileNameProviderAction(
+                appSettingsFileNameStemTokenizationConventionAction,
+                environmentNameToAppSettingsFileNameTokenConverterAction,
+                environmentNameProviderAction,
+                fileNameOperatorAction);
+
+            var environmentNameSpecificAppSettingsFilePathProviderAction = services.AddEnvironmentNameSpecificAppSettingsFilePathProviderAction(
+                appSettingsDirectoryPathProviderAction,
+                environmentNameSpecificAppSettingsFileNameProviderAction,
+                stringlyTypedPathOperatorAction);
+
+            return new EnvironmentNameSpecificAppSettingsFilePathAggregation01
+            {
+                AppSettingsFileNameStemTokenizationConventionAction = appSettingsFileNameStemTokenizationConventionAction,
+                EnvironmentNameSpecificAppSettingsFileNameProviderAction = environmentNameSpecificAppSettingsFileNameProviderAction,
+                EnvironmentNameToAppSettingsFileNameTokenConverterAction = environmentNameToAppSettingsFileNameTokenConverterAction,
+                EnvironmentNameSpecificAppSettingsFilePathProviderAction = environmentNameSpecificAppSettingsFilePathProviderAction
+            };
         }
     }
 }
