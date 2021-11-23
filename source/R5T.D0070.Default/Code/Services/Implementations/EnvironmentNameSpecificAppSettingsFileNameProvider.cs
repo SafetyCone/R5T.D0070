@@ -5,11 +5,13 @@ using R5T.Cherusci;
 using R5T.Lombardy;
 
 using R5T.D0062;
+using R5T.T0064;
 
 
 namespace R5T.D0070
 {
-    public class EnvironmentNameSpecificAppSettingsFileNameProvider : IEnvironmentNameSpecificAppSettingsFileNameProvider
+    [ServiceImplementationMarker]
+    public class EnvironmentNameSpecificAppSettingsFileNameProvider : IEnvironmentNameSpecificAppSettingsFileNameProvider, IServiceImplementation
     {
         private IAppSettingsFileNameStemTokenizationConvention AppSettingsFileNameStemTokenizationConvention { get; }
         private IEnvironmentNameToAppSettingsFileNameTokenConverter EnvironmentNameToAppSettingsFileNameTokenConverter { get; }

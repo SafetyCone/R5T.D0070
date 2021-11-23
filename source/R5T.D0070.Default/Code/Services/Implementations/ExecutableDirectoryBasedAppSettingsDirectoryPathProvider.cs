@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 
 using R5T.D0065;
+using R5T.T0064;
 
 
 namespace R5T.D0070
 {
-    public class ExecutableDirectoryBasedAppSettingsDirectoryPathProvider : IAppSettingsDirectoryPathProvider
+    [ServiceImplementationMarker]
+    public class ExecutableDirectoryBasedAppSettingsDirectoryPathProvider : IAppSettingsDirectoryPathProvider, IServiceImplementation
     {
         private IExecutableDirectoryPathProvider ExecutableDirectoryPathProvider { get; }
 

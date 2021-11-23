@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using R5T.T0064;
+
 
 namespace R5T.D0070
 {
-    public class AppSettingsFileNameStemTokenizationConvention : IAppSettingsFileNameStemTokenizationConvention
+    [ServiceImplementationMarker]
+    public class AppSettingsFileNameStemTokenizationConvention : IAppSettingsFileNameStemTokenizationConvention, IServiceImplementation
     {
         public Task<string> Combine(IEnumerable<string> appSettingsFileNameStemTokens)
         {

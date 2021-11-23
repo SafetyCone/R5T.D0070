@@ -5,57 +5,52 @@ using Microsoft.Extensions.DependencyInjection;
 using R5T.Lombardy;
 
 using R5T.D0065;
+using R5T.T0062;
 using R5T.T0063;
 
 
 namespace R5T.D0070.Default
 {
-    public static partial class IServiceCollectionExtensions
+    public static class IServiceActionExtensions
     {
         /// <summary>
         /// Adds the <see cref="DefaultJsonAppSettingsFileNameProvider"/> implementation of <see cref="IAppSettingsFileNameProvider"/> as a <see cref="ServiceLifetime.Singleton"/>.
         /// </summary>
-        public static IServiceCollection AddDefaultJsonAppSettingsFileNameProvider(this IServiceCollection services,
+        public static IServiceAction<IAppSettingsFileNameProvider> AddDefaultJsonAppSettingsFileNameProviderAction(this IServiceAction _,
             IServiceAction<IFileNameOperator> fileNameOperatorAction)
         {
-            services
-                .AddSingleton<IAppSettingsFileNameProvider, DefaultJsonAppSettingsFileNameProvider>()
-                .Run(fileNameOperatorAction)
-                ;
+            var serviceAction = _.New<IAppSettingsFileNameProvider>(services => services.AddDefaultJsonAppSettingsFileNameProvider(
+                fileNameOperatorAction));
 
-            return services;
+            return serviceAction;
         }
 
         /// <summary>
         /// Adds the <see cref="AppSettingsFilePathProvider"/> implementation of <see cref="IAppSettingsFilePathProvider"/> as a <see cref="ServiceLifetime.Singleton"/>.
         /// </summary>
-        public static IServiceCollection AddAppSettingsFilePathProvider(this IServiceCollection services,
+        public static IServiceAction<IAppSettingsFilePathProvider> AddAppSettingsFilePathProviderAction(this IServiceAction _,
             IServiceAction<IAppSettingsDirectoryPathProvider> appSettingsDirectoryPathProviderAction,
             IServiceAction<IAppSettingsFileNameProvider> appSettingsFileNameProviderAction,
             IServiceAction<IStringlyTypedPathOperator> stringlyTypedPathOperatorAction)
         {
-            services
-                .AddSingleton<IAppSettingsFilePathProvider, AppSettingsFilePathProvider>()
-                .Run(appSettingsDirectoryPathProviderAction)
-                .Run(appSettingsFileNameProviderAction)
-                .Run(stringlyTypedPathOperatorAction)
-                ;
+            var serviceAction = _.New<IAppSettingsFilePathProvider>(services => services.AddAppSettingsFilePathProvider(
+                appSettingsDirectoryPathProviderAction,
+                appSettingsFileNameProviderAction,
+                stringlyTypedPathOperatorAction));
 
-            return services;
+            return serviceAction;
         }
 
         /// <summary>
         /// Adds the <see cref="ExecutableDirectoryBasedAppSettingsDirectoryPathProvider"/> implementation of <see cref="IAppSettingsDirectoryPathProvider"/> as a <see cref="ServiceLifetime.Singleton"/>.
         /// </summary>
-        public static IServiceCollection AddExecutableDirectoryBasedAppSettingsDirectoryPathProvider(this IServiceCollection services,
+        public static IServiceAction<IAppSettingsDirectoryPathProvider> AddExecutableDirectoryBasedAppSettingsDirectoryPathProviderAction(this IServiceAction _,
             IServiceAction<IExecutableDirectoryPathProvider> executableDirectoryPathProviderAction)
         {
-            services
-                .AddSingleton<IAppSettingsDirectoryPathProvider, ExecutableDirectoryBasedAppSettingsDirectoryPathProvider>()
-                .Run(executableDirectoryPathProviderAction)
-                ;
+            var serviceAction = _.New<IAppSettingsDirectoryPathProvider>(services => services.AddExecutableDirectoryBasedAppSettingsDirectoryPathProvider(
+                executableDirectoryPathProviderAction));
 
-            return services;
+            return serviceAction;
         }
     }
 }

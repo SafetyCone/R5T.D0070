@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using R5T.T0064;
+
 
 namespace R5T.D0070
 {
-    public interface IEnvironmentNameToAppSettingsFileNameTokenConverter
+    [ServiceDefinitionMarker]
+    public interface IEnvironmentNameToAppSettingsFileNameTokenConverter : IServiceDefinition
     {
         Task<string> ConvertEnvironmentNameToAppSettingsFileNameToken(string environmentName);
     }
