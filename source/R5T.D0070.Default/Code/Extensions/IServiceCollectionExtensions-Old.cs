@@ -8,10 +8,8 @@ using R5T.Lombardy;
 using R5T.D0062;
 using R5T.D0065;
 
-using R5T.D0070.Default;
 
-
-namespace R5T.D0070
+namespace R5T.D0070.Default
 {
     public static partial class IServiceCollectionExtensions
     {
